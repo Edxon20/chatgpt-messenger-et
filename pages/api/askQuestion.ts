@@ -6,14 +6,13 @@ import { collection, doc } from 'firebase/firestore';
 import { adminDb } from '../../firebaseAdmin';
 
 type Data = {
-    answer: string
-}
+    answer: string;    
+};
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
-) {
-  
+) {  
 
   const {prompt, chatId, model, session} = req.body;
 
@@ -28,17 +27,20 @@ export default async function handler(
  }
 
  // CHATGPT Query
- const response = await query(prompt, chatId, model)
 
- const message: Message = {
-    text: response || "CHATGPT was unable to find an asnwer for that!",
-    createdAt: admin.firestore.Timestamp.now(),
-    user:{
-        _id: 'ChatGPT',
-        name: 'ChatGPT',
-        avatar: "https://links.papareact.com/89k"
-    },
- };
+const response = await query(prompt, chatId, model);
+
+const message: Message = {
+   text: response || "=ChatGPT was unable to find an answer for that!",
+   createdAt: admin.firestore.Timestamp.now(),
+   user:{
+      _id: 'ChatGPT',
+      name: 'ChatGPT',
+      avatar: 'https://links.papareact.com/89k',
+   },
+ };  
+
+
 
  await adminDb
  .collection('users')
@@ -47,8 +49,6 @@ export default async function handler(
  .doc(chatId)
  .collection("messages")
  .add(message);
-
- 
  
 
 

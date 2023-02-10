@@ -39,17 +39,24 @@ function ChatInput({ chatId }: Props) {
         }
     }
 
-    await addDoc(collection(db, 'users', session?.user?.email!, 'chats', chatId, 'messages'), 
+    await addDoc
+    (collection(
+        db, 
+        "users", 
+        session?.user?.email!, 
+        "chats", 
+        chatId, 
+        "messages"), 
     message
-    )  
+    );  
 
     // Toast notification to say Loading!
     const notification = toast.loading("ChatGPT is thinkin...")
     
-    await fetch('./api/askQuestion', {
-        method: 'POST',
+    await fetch("/api/askQuestion", {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
             prompt: input, 
@@ -59,7 +66,7 @@ function ChatInput({ chatId }: Props) {
         }),
     }).then(() =>{
         // Toast notification to say successful!
-        toast.success('ChatGPT has responded!', {
+        toast.success("ChatGPT has responded!", {
             id: notification,            
         });
     }) ;
